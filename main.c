@@ -75,48 +75,51 @@ float recupera_fracao(float n){
 int main(void){
 
   char num[N], num_convert[N];
-  int b_atual, b_convert, num_digitos, i, k;
-  int expoente, inteira, ponto=0, flag1, flag2, flag3, flag4, flag5=0, flag6;
-  float fracionaria, soma = 0;
-  double n;
-
+  int b_atual, b_convert, num_digitos, expoente, inteira, i, j, k;
+  int ponto, sinal, verif_atual, verif_bconvert, valor0, char_base;
+  float fracionaria, n, soma = 0;
   
   while (1){
 
-    flag1 = flag3 = flag4 = flag6 = 0;
-    flag2 = 1;
-    printf("\nValor - Base Origem (2, 8, 10 ou 16) - Base Destino (2, 8, 10 ou 16)\n");
-    printf(">>> ");
+    sinal = ponto = verif_atual = verif_bconvert = valor0 = char_base = 0;
     setbuf(stdin, NULL);
     scanf("%50s%d%d", num, &b_atual, &b_convert);
 
+
+    for (i=1; i<strlen(num); i++)         //i=0 é o sinal.
+      if (num[i] != '0'){
+        valor0 = 1;
+      }
+
+    if (num[0] == '+' && valor0 == 0 && b_atual == 0 && b_convert == 0)
+      break;
+
     if (num[0] != '+' && num[0] != '-'){
-      printf("Por favor, insira o sinal antes do valor...\n");
-      flag1 = 1;
+      fprintf(stderr, "Por favor, insira o sinal antes do valor...\n");
+      sinal = 1;
     }
 
     num_digitos = strlen(num);
     for (i=1; i < num_digitos; i++){
       if (num[i] == '.'){
         ponto = i;
-        flag2 = 0;
         break;      // loop infinito para inserir as entradas e repeti-las caso
       }            // não estejam de acordo.
     }             // verificação feita com o auxilio de flags.
 
-    if (flag2 == 1)
-      printf("Por favor, insira o '.' separando a parte inteira da fracionária...\n");
+    if (ponto == 0)
+      fprintf(stderr, "Por favor, insira o '.' separando a parte inteira da fracionária...\n");
 
     if (b_atual == 2){
       for (i=1; i<ponto; i++){
         if (num[i] < 48 || num[i] > 49){
-          flag6 = 1;
+          char_base = 1;
           break;
         }
       }
       for (i=ponto+1; i<num_digitos; i++){
         if (num[i] < 48 || num[i] > 49){
-          flag6 = 1;
+          char_base = 1;
           break;
         }
       }
@@ -124,13 +127,13 @@ int main(void){
     else if (b_atual == 8){
       for (i=1; i<ponto; i++){
         if (num[i] < 48 || num[i] > 55){
-          flag6 = 1;
+          char_base = 1;
           break;
         }
       }
       for (i=ponto+1; i<num_digitos; i++){
         if (num[i] < 48 || num[i] > 55){
-          flag6 = 1;
+          char_base = 1;
           break;
         }
       }
@@ -138,13 +141,13 @@ int main(void){
     else if (b_atual == 10){
       for (i=1; i<ponto; i++){
         if (num[i] < 48 || num[i] > 57){
-          flag6 = 1;
+          char_base = 1;
           break;
         }
       }
       for (i=ponto+1; i<num_digitos; i++){
         if (num[i] < 48 || num[i] > 57){
-          flag6 = 1;
+          char_base = 1;
           break;
         }
       }
@@ -152,81 +155,84 @@ int main(void){
     else if (b_atual == 16){
       for (i=1; i<ponto; i++){
         if ((num[i] < 48 || num[i] > 57) && (num[i] < 'A' || num[i] > 'F')){
-          flag6 = 1;
+          char_base = 1;
           break;
         }
       }
       for (i=ponto+1; i<num_digitos; i++){
         if ((num[i] < 48 || num[i] > 57) && (num[i] < 'A' || num[i] > 'F')){
-          flag6 = 1;
+          char_base = 1;
           break;
         }
       }
     }
 
-    if (flag6 == 1)
-      printf("Este valor não pertence a base %d...\n", b_atual);
+    if (char_base == 1)
+      fprintf(stderr, "Este valor não pertence a base %d...\n", b_atual);
 
-    if (b_atual != 2 && b_atual != 8 && b_atual != 10 && b_atual != 16 && b_atual != 0){
-      printf("Digite novamente a base de origem...\n");
-      flag3 = 1;
+    if (b_atual != 2 && b_atual != 8 && b_atual != 10 && b_atual != 16){
+      fprintf(stderr, "Digite novamente a base de origem...\n");
+      verif_atual = 1;
     }
 
-    if (b_convert != 2 && b_convert != 8 && b_convert != 10 && b_convert != 16 && b_convert != 0){
-      printf("Digite novamente a base de destino...\n");
-      flag4 = 1;
+    if (b_convert != 2 && b_convert != 8 && b_convert != 10 && b_convert != 16){
+      fprintf(stderr, "Digite novamente a base de destino...\n");
+      verif_bconvert = 1;
     }
 
-    if (flag1 == 0 && flag2 == 0 && flag3 == 0 && flag4 == 0 && flag6 == 0)
-      break;
-  }
+    if (sinal == 0 && verif_atual == 0 && verif_bconvert == 0 && char_base == 0 && valor0 == 1 && ponto != 0){
 
-  expoente = ponto -2;              //desconsidera o PONTO e o SINAL.
-  for (i=1; i < ponto; i++){
-    soma += transforma_char(num[i]) * pow(b_atual, expoente);
-    expoente--;
-  }
-  inteira = soma;
+      expoente = ponto -2;              //desconsidera o PONTO e o SINAL.
+      for (i=1; i < ponto; i++){
+        soma += transforma_char(num[i]) * pow(b_atual, expoente);
+        expoente--;
+      }
+      inteira = soma; 
+      
 
+      soma = 0;
+      expoente = -1;
+      for (i = ponto + 1; i < num_digitos; i++){
+        soma += transforma_char(num[i]) * pow(b_atual, expoente);
+        expoente --;
+      }
+      fracionaria = soma;
+      
 
-  soma = 0;
-  expoente = -1;
-  for (i = ponto + 1; i < num_digitos; i++){
-    soma += transforma_char(num[i]) * pow(b_atual, expoente);
-    expoente --;
-  }
-  fracionaria = soma;
+      if (b_convert == 10){
+        if (fracionaria == 0)
+          printf("%c%d.\n", num[0], inteira);
+        else
+          printf("%c%g\n", num[0], inteira + fracionaria);
+      }          //"%g" para remover os zeros a direita, caso tenha fração.
 
+      else {
 
-  if (b_convert == 10){
-    if (fracionaria == 0)
-      printf("%c%d.\n", num[0], inteira);
-    else
-      printf("%c%g\n", num[0], inteira + fracionaria);
-  }          //"%g" para remover os zeros a direita
+        for (i = ponto -1;; i--){
+          num_convert[i] = inteira % b_convert;
+          inteira = inteira / b_convert;
+          if (inteira == 0)
+            break;
+        }
+        k = i;
 
-  else {
+        num_convert[ponto] = '.';
+        for (i = ponto +1; fracionaria > 0; i++){
+          n = fracionaria * b_convert;
+          num_convert[i] = recupera_inteiro(n);
+          fracionaria = recupera_fracao(n);
+        }
 
-    for (i = ponto -1;; i--){
-      num_convert[i] = inteira % b_convert;
-      inteira = inteira / b_convert;
-      if (inteira == 0){
-        break;
+        for (j=i;; j--)
+          if (num_convert[j] != 0)
+            break;        // guarda a posição em que termina os 0's a direita
+
+        printf("%c", num[0]);   //imprime o sinal
+        for (k; k <= j; k++){
+          printf("%c", transforma_int(num_convert[k]));
+        }
+        printf("\n");
       }
     }
-    k = i;
-
-    num_convert[ponto] = '.';
-    for (i = ponto +1; fracionaria > 0; i++){
-      n = fracionaria * b_convert;
-      num_convert[i] = recupera_inteiro(n);
-      fracionaria = recupera_fracao(n);
-    }
-
-    printf("%c", num[0]);   //imprime o sinal
-    for (k; k <= i; k++){
-      printf("%c", transforma_int(num_convert[k]));
-    }
-    printf("\n");
   }
 }
