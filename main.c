@@ -75,10 +75,10 @@ float recupera_fracao(float n){
 int main(void){
 
   char num[N], num_convert[N];
-  int b_atual, b_convert, num_digitos, expoente, inteira, i, j, k;
+  int b_atual, b_convert, num_digitos, expoente, inteira, i, k;
   int ponto, sinal, verif_atual, verif_bconvert, valor0, char_base;
   float fracionaria, n, soma = 0;
-  
+
   while (1){
 
     sinal = ponto = verif_atual = verif_bconvert = valor0 = char_base = 0;
@@ -108,7 +108,7 @@ int main(void){
     }             // verificação feita com o auxilio de flags.
 
     if (ponto == 0)
-      fprintf(stderr, "Por favor, insira o '.' separando a parte inteira da fracionária...\n");
+      fprintf(stderr, "Insira o '.' separando a parte inteira da fracão...\n");
 
     if (b_atual == 2){
       for (i=1; i<ponto; i++){
@@ -180,58 +180,62 @@ int main(void){
       verif_bconvert = 1;
     }
 
-    if (sinal == 0 && verif_atual == 0 && verif_bconvert == 0 && char_base == 0 && valor0 == 1 && ponto != 0){
+    if(sinal == 0 && verif_atual == 0 && verif_bconvert == 0 && char_base == 0){
+      if (valor0 == 1 && ponto != 0){
 
-      expoente = ponto -2;              //desconsidera o PONTO e o SINAL.
-      for (i=1; i < ponto; i++){
-        soma += transforma_char(num[i]) * pow(b_atual, expoente);
-        expoente--;
-      }
-      inteira = soma; 
-      
-
-      soma = 0;
-      expoente = -1;
-      for (i = ponto + 1; i < num_digitos; i++){
-        soma += transforma_char(num[i]) * pow(b_atual, expoente);
-        expoente --;
-      }
-      fracionaria = soma;
-      
-
-      if (b_convert == 10){
-        if (fracionaria == 0)
-          printf("%c%d.\n", num[0], inteira);
-        else
-          printf("%c%g\n", num[0], inteira + fracionaria);
-      }          //"%g" para remover os zeros a direita, caso tenha fração.
-
-      else {
-
-        for (i = ponto -1;; i--){
-          num_convert[i] = inteira % b_convert;
-          inteira = inteira / b_convert;
-          if (inteira == 0)
-            break;
+        expoente = ponto -2;              //desconsidera o PONTO e o SINAL.
+        for (i=1; i < ponto; i++){
+          soma += transforma_char(num[i]) * pow(b_atual, expoente);
+          expoente--;
         }
-        k = i;
+        inteira = soma;
 
-        num_convert[ponto] = '.';
-        for (i = ponto +1; fracionaria > 0; i++){
-          n = fracionaria * b_convert;
-          num_convert[i] = recupera_inteiro(n);
-          fracionaria = recupera_fracao(n);
+
+        soma = 0;
+        expoente = -1;
+        for (i = ponto + 1; i < num_digitos; i++){
+          soma += transforma_char(num[i]) * pow(b_atual, expoente);
+          expoente --;
         }
+        fracionaria = soma;
 
-        for (j=i;; j--)
-          if (num_convert[j] != 0)
-            break;        // guarda a posição em que termina os 0's a direita
 
-        printf("%c", num[0]);   //imprime o sinal
-        for (k; k <= j; k++){
-          printf("%c", transforma_int(num_convert[k]));
+        if (b_convert == 10){
+          if (fracionaria == 0)
+            printf("%c%d.\n", num[0], inteira);
+          else
+            printf("%c%g\n", num[0], inteira + fracionaria);
+        }          //"%g" para remover os zeros a direita da fração.
+
+        else {
+
+          for (i = ponto -1;; i--){
+            num_convert[i] = inteira % b_convert;
+            inteira = inteira / b_convert;
+            if (inteira == 0)
+              break;
+            }
+          k = i;
+
+          num_convert[ponto] = '.';
+          for (i = ponto + 1;; i++){
+            n = fracionaria * b_convert;
+            num_convert[i] = recupera_inteiro(n);
+            fracionaria = recupera_fracao(n);
+            if (fracionaria == 0)
+              break;
+          }
+
+          for (i;; i--)
+            if (num_convert[i] != 0)
+              break;        // guarda a posição em que termina os 0's a direita
+
+          printf("%c", num[0]);   //imprime o sinal
+          for (k; k <= i; k++){
+            printf("%c", transforma_int(num_convert[k]));
+          }
+          printf("\n");
         }
-        printf("\n");
       }
     }
   }
