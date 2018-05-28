@@ -186,7 +186,7 @@ int main(void){
     soma += transforma_char(num[i]) * pow(b_atual, expoente);
     expoente--;
   }
-  inteira = soma; //inteiro_para_decimal(num, b_atual, ponto);
+  inteira = soma;
 
 
   soma = 0;
