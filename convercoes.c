@@ -177,7 +177,7 @@ float recupera_fracao(float n){
 
 int inteiro_para_baseX(unsigned long long int *inteira, int b_destino){
   int n;
-  unsigned long long p;
+  unsigned long long int p;
   n = *inteira % b_destino;
   p = *inteira;
   *inteira = p / b_destino;
