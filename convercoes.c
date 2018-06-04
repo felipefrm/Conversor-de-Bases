@@ -193,7 +193,7 @@ int fracao_para_baseX(float *fracionaria, int b_destino){
   return n;
 }
 
-int inteiro_para_base10(char num[], int b_origem, int ponto, int num_char[]){
+unsigned long long int inteiro_para_base10(char num[], int b_origem, int ponto, int num_char[]){
   int i, expoente = ponto -2;  //desconsidera o PONTO e o SINAL.
   unsigned long long int soma = 0;
   for (i=1; i < ponto; i++){
