@@ -13,7 +13,7 @@ int inteiro_para_baseX(unsigned long long int *inteira, int b_destino);
 int fracao_para_baseX(float *fracionaria, int b_destino);
 int recupera_inteiro(float n);
 float recupera_fracao(float n);
-int inteiro_para_base10(char num[], int b_origem, int ponto, int num_char[]);
+unsigned long long int inteiro_para_base10(char num[], int b_origem, int ponto, int num_char[]);
 float fracao_para_base10(char num[], int b_origem, int ponto, int digitos, int num_char[]);
 
 #endif
