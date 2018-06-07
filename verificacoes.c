@@ -22,7 +22,7 @@ int verificaPonto(char num[], int num_digitos){
   int ponto = 0;
   for (int i=1; i < num_digitos; i++){
     if (num[i] == '.'){
-      ponto = i;
+      ponto = i;  // Verifica se tem ponto e retorna a posição dele caso tenha
       return ponto;
     }
   }
@@ -31,7 +31,7 @@ int verificaPonto(char num[], int num_digitos){
 
 int verificaNumero(char num[], int b_origem, int ponto, int num_digitos){
 
-  int i, verif_num = 1;
+  int i, verif_num = 1;       // Verifica se o numero pertence  a base de origem
   if (b_origem == 2){
     for (i=1; i<ponto; i++){
       if (num[i] < 48 || num[i] > 49){
