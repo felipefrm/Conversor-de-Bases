@@ -11,8 +11,8 @@ int main(void){
 
   char num[N], num_convert[N];                         // Variavies necessárias
   int b_origem, b_destino, num_digitos, num_char[N], i, k;
-  int ponto, tem_sinal, verif_origem=1, verif_destino=1, tem_valor, verif_num; //flags
-  double fracionaria;
+  int ponto, tem_sinal, verif_origem, verif_destino, tem_valor, verif_num;
+  double fracionaria;                                                //flags
   unsigned long long int inteira;
 
   while (1){        // loop infinito para inserir as entradas e repeti-las caso
@@ -37,7 +37,7 @@ int main(void){
 
     ponto = verificaPonto(num, num_digitos);
     if (ponto == 0){
-      fprintf(stderr, "Insira o '.' separando a parte inteira da fracão...\n");
+      fprintf(stderr, "Insira o '.' separando a parte inteira da fração...\n");
     }
 
     verif_num = verificaNumero(num, b_origem, ponto, num_digitos);
