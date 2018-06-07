@@ -1,11 +1,11 @@
 #include "convercoes.h"
 #include <math.h>
 
-int transformaChar(char num){        // FUNÇÕES
+int transformaChar(char num){
 
   if (num >= 48 && num <= 57)
     num = num - 48;
-
+              // Converte o caractere para o seu valor em sua respectiva base
   switch(num){
     case 'A':
       num = 10;
@@ -29,7 +29,7 @@ int transformaChar(char num){        // FUNÇÕES
   return num;
 }
 
-char transformaInt(int num){
+char transformaInt(int num){          // Função inversa à primeira
 
   if (num >= 0 && num <= 9)
     num = num + 48;
