@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 #include "convercoes.h"
 #include "verificacoes.h"
 
@@ -9,8 +8,8 @@
 
 int main(void){
 
-  char num[N], num_convert[N];                         // Variavies necessárias
-  int b_origem, b_destino, num_digitos, num_char[N], i, k;
+  char num[N], num_convert[N], numX[N];                         // Variavies necessárias
+  int b_origem, b_destino, num_digitos, num_char[N], i, k, baseX;
   int ponto, tem_sinal, verif_origem, verif_destino, tem_valor, verif_num;
   double fracionaria;                                                //flags
   unsigned long long int inteira;
@@ -21,6 +20,7 @@ int main(void){
 
     setbuf(stdin, NULL);
     scanf("%s%d%d", num, &b_origem, &b_destino);
+
     num_digitos = strlen(num);
 
     tem_valor = verificaValor(num, num_digitos);
@@ -57,11 +57,36 @@ int main(void){
     if(tem_sinal == 1 && verif_origem == 1 && verif_destino == 1){
       if (tem_valor == 1 && ponto != 0 && verif_num == 1 && num_digitos <= 50){
 
+        if (b_origem == -1 || b_destino == -1){
+          FILE *fp;
+          fp = fopen("arquivo_baseX", "r");
+          if (fp == NULL){
+            fprintf(stderr, "Erro na abertura do arquivo.\n");
+            exit(1);
+          }
+          for (k=0, baseX=0;; k++){
+            numX[k] = fgetc(fp);
+            if (numX[k] == EOF)
+              break;
+            if (numX[k] == '\n')
+              baseX++;
+          }
+          fclose(fp);
+        }
+
+        if (b_origem == -1){
+          inteira = intBaseXpara10(k, baseX, ponto, numX, num);
+          fracionaria = fracBaseXpara10(k, baseX, ponto, numX, num);
+        }
+
+        else {
+
         for (i=1; i<num_digitos; i++)
           num_char[i] = transformaChar(num[i]);
 
         inteira = inteiroParaBase10(num, b_origem, ponto, num_char);
         fracionaria = fracaoParaBase10(num, b_origem, ponto, num_digitos, num_char);
+        }
 
         if (b_destino == 10){
 
@@ -74,7 +99,10 @@ int main(void){
         else {
 
           for (i = ponto -1;; i--){
-            num_convert[i] = inteiroParaBaseX(&inteira, b_destino);
+            if (b_destino == -1)
+              num_convert[i] = inteiroParaBaseX(&inteira, baseX);
+            else
+              num_convert[i] = inteiroParaBaseX(&inteira, b_destino);
             if (inteira == 0)
               break;
           }
@@ -82,7 +110,10 @@ int main(void){
 
           num_convert[ponto] = '.';
           for (i = ponto + 1;; i++){
-            num_convert[i] = fracaoParaBaseX(&fracionaria, b_destino);
+            if (b_destino == -1)
+              num_convert[i] = fracaoParaBaseX(&fracionaria, baseX);
+            else
+              num_convert[i] = fracaoParaBaseX(&fracionaria, b_destino);
             if (fracionaria == 0)
               break;
           }
@@ -95,7 +126,10 @@ int main(void){
 
           printf("%c", num[0]);   //imprime o sinal
           for (; k <= i; k++){
-            printf("%c", transformaInt(num_convert[k]));
+            if (b_origem == -1)
+
+            else
+              printf("%c", transformaInt(num_convert[k]));
           }
           printf("\n");
         }
