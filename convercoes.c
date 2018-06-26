@@ -2,6 +2,25 @@
 #include <math.h>
 #include <string.h>
 
+int transformaXchar(char c, char *num, int k){
+
+  int i, valorInt;
+    for (i=0, valorInt=0; i<k; i++){
+      if (c == *(num+i))
+        return valorInt;
+      if (*(num+i) == '\n')
+        valorInt++;
+    }
+}
+
+char transformaXint(char num, int j, char *numX){
+  int i, k;
+  for (i=0, k=0; i<j; i+=2, k++)
+    if (num == k)            // i+=2 para pular o '\n' que separa
+      return *(numX+i);       // um símbolo do outro.
+  return '.';
+}
+
 int transformaChar(char num){
 
   if (num >= 48 && num <= 57)
@@ -58,36 +77,6 @@ char transformaInt(int num){          // Função inversa à primeira
   return num;
 }
 
-int transformaXchar(char c, char *num, int k){
-
-  int i, valorInt;
-    for (i=0, valorInt=0; i<k; i++){
-      if (c == *(num+i))
-        return valorInt;
-      if (*(num+i) == '\n')
-        valorInt++;
-    }
-}
-
-char transformaXint(char num, int j, char *numX){
-  int i, k;
-  for (i=0, k=0; i<j; i+=2, k++)
-    if (num == k)            // i+=2 para pular o '\n' que separa
-      return *(numX+i);       // um símbolo do outro.
-  return '.';
-}
-
-int recuperaInteiro(double n){
-    int num = (int)n;
-    return num;
-}
-
-double recuperaFracao(double n){
-    double num;
-    num = n - (int)n;
-    return num;
-}
-
 unsigned long long int intBaseXpara10(int k, int baseX, int ponto, char *num, char *str){
   int expoente, i;
   unsigned long long int soma = 0;
@@ -123,6 +112,18 @@ int fracaoParaDestino(double *fracionaria, int b_destino){
   *fracionaria = recuperaFracao(p);
   return n;
 }
+
+int recuperaInteiro(double n){
+    int num = (int)n;
+    return num;
+}
+
+double recuperaFracao(double n){
+    double num;
+    num = n - (int)n;
+    return num;
+}
+
 
 unsigned long long int inteiroParaBase10(char *num, int b_origem, int ponto, int *num_char){
   int i, expoente = ponto -2;  //desconsidera o PONTO e o SINAL.
