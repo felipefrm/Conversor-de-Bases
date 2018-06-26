@@ -21,9 +21,25 @@ int main(void){
     exit(1);
   }
 
-  while (1){        // loop infinito para inserir as entradas e repeti-las caso
-                   // não estejam de acordo.
-                  // verificação feita por meio de funções com o auxilio de flags.
+  FILE *arq_bX;
+  arq_bX = fopen("arquivo_baseX", "r");
+  if (arq_bX == NULL){
+    fprintf(stderr, "Erro na abertura do arquivo.\n");
+    exit(1);
+  }
+  for (j=0, baseX=0;; j++){
+    *(numX+j) = fgetc(arq_bX);
+    if (*(numX+j) == EOF)
+      break;
+    if (*(numX+j) == '\n')
+      baseX++;
+  }
+  fclose(arq_bX);
+
+
+  while (1){        // loop infinito para inserir as entradas e repeti-las apos
+                   // cada conversão
+                  // verificações de entrada feita por meio de funções com o auxilio de flags.
 
     setbuf(stdin, NULL);
     scanf("%s%d%d", num, &b_origem, &b_destino);
@@ -63,23 +79,6 @@ int main(void){
 
     if(tem_sinal == 1 && verif_origem == 1 && verif_destino == 1){
       if (tem_valor == 1 && ponto != 0 && verif_num == 1 && num_digitos <= 50){
-
-        if (b_origem == -1 || b_destino == -1){
-          FILE *arq_bX;
-          arq_bX = fopen("arquivo_baseX", "r");
-          if (arq_bX == NULL){
-            fprintf(stderr, "Erro na abertura do arquivo.\n");
-            exit(1);
-          }
-          for (j=0, baseX=0;; j++){
-            *(numX+j) = fgetc(arq_bX);
-            if (*(numX+j) == EOF)
-              break;
-            if (*(numX+j) == '\n')
-              baseX++;
-          }
-          fclose(arq_bX);
-        }
 
         if (b_origem == -1){
           inteira = intBaseXpara10(j, baseX, ponto, numX, num);
