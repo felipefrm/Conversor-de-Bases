@@ -6,9 +6,9 @@ int transformaXchar(char c, char *num, int k){
 
   int i, valorInt;
     for (i=0, valorInt=0; i<k; i++){
-      if (c == *(num+i))
+      if (c == num[i])
         return valorInt;
-      if (*(num+i) == '\n')
+      if (num[i] == '\n')
         valorInt++;
     }
 }
@@ -17,7 +17,7 @@ char transformaXint(char num, int j, char *numX){
   int i, k;
   for (i=0, k=0; i<j; i+=2, k++)
     if (num == k)            // i+=2 para pular o '\n' que separa
-      return *(numX+i);       // um símbolo do outro.
+      return numX[i];       // um símbolo do outro.
   return '.';
 }
 
@@ -81,7 +81,7 @@ unsigned long long int intBaseXpara10(int k, int baseX, int ponto, char *num, ch
   int expoente, i;
   unsigned long long int soma = 0;
   for (i=ponto-1, expoente=0; i > 0; i--, expoente++){
-    soma += transformaXchar(*(str+i), num, k) * pow(baseX, expoente);
+    soma += transformaXchar(str[i], num, k) * pow(baseX, expoente);
   }
   return soma;
 }
@@ -90,7 +90,7 @@ double fracBaseXpara10(int k, int baseX, int ponto, char *num, char *str){
   int expoente, i;
   double soma=0;
   for (i=strlen(str)-1, expoente=ponto-i; i > ponto; i--, expoente++){
-    soma += transformaXchar(*(str+i), num, k) * pow(baseX, expoente);
+    soma += transformaXchar(str[i], num, k) * pow(baseX, expoente);
   }
   return soma;
 }
@@ -129,7 +129,7 @@ unsigned long long int inteiroParaBase10(char *num, int b_origem, int ponto, int
   int i, expoente = ponto -2;  //desconsidera o PONTO e o SINAL.
   unsigned long long int soma = 0;
   for (i=1; i < ponto; i++){
-    soma += *(num_char+i) * pow(b_origem, expoente);
+    soma += num_char[i] * pow(b_origem, expoente);
     expoente--;
   }
   return soma;
@@ -139,7 +139,7 @@ double fracaoParaBase10(char *num, int b_origem, int ponto, int digitos, int *nu
   int i, expoente = -1;
   double soma=0;
   for (i = ponto+1; i < digitos; i++){
-    soma += *(num_char+i) * pow(b_origem, expoente);
+    soma += num_char[i] * pow(b_origem, expoente);
     expoente --;
   }
   return soma;
