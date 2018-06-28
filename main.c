@@ -29,9 +29,9 @@ int main(void){
   }
   for (j=0, baseX=0;; j++){
     *(numX+j) = fgetc(arq_bX);
-    if (*(numX+j) == EOF)
+    if (numX[j] == EOF)
       break;
-    if (*(numX+j) == '\n')
+    if (numX[j] == '\n')
       baseX++;
   }
   fclose(arq_bX);
@@ -47,7 +47,7 @@ int main(void){
     num_digitos = strlen(num);
 
     tem_valor = verificaValor(num, num_digitos);
-    if (*(num+0) == '+' && tem_valor == 0 && b_origem == 0 && b_destino == 0)
+    if (num[0] == '+' && tem_valor == 0 && b_origem == 0 && b_destino == 0)
       break;
 
     if (num_digitos > 50)
@@ -88,7 +88,7 @@ int main(void){
         else {
 
         for (i=1; i<num_digitos; i++)
-          *(num_char+i) = transformaChar(*(num+i));
+          num_char[i] = transformaChar(num[i]);
 
         inteira = inteiroParaBase10(num, b_origem, ponto, num_char);
         fracionaria = fracaoParaBase10(num, b_origem, ponto, num_digitos, num_char);
@@ -99,44 +99,44 @@ int main(void){
         if (b_destino == 10){
 
           if (fracionaria == 0)
-            fprintf(arq_out, "%c%llu.\n", *(num+0), inteira);
+            fprintf(arq_out, "%c%llu.\n", num[0], inteira);
           else
-            fprintf(arq_out, "%c%g\n", *(num+0), inteira + fracionaria);
+            fprintf(arq_out, "%c%g\n", num[0], inteira + fracionaria);
         }          //"%g" para remover os zeros a direita da fração.
 
         else {
 
           for (k = ponto -1;; k--){
             if (b_destino == -1)
-              *(num_convert+k) = inteiroParaDestino(&inteira, baseX);
+              num_convert[k] = inteiroParaDestino(&inteira, baseX);
             else
-              *(num_convert+k) = inteiroParaDestino(&inteira, b_destino);
+              num_convert[k] = inteiroParaDestino(&inteira, b_destino);
             if (inteira == 0)
               break;
           }
 
-          *(num_convert + ponto) = '.';
+          num_convert[ponto] = '.';
           for (i = ponto + 1;; i++){
             if (b_destino == -1)
-              *(num_convert+i) = fracaoParaDestino(&fracionaria, baseX);
+              num_convert[i] = fracaoParaDestino(&fracionaria, baseX);
             else
-              *(num_convert+i) = fracaoParaDestino(&fracionaria, b_destino);
+              num_convert[i] = fracaoParaDestino(&fracionaria, b_destino);
             if (fracionaria == 0)
               break;
           }
 
           while (1){
-            if (*(num_convert+i) != 0)
+            if (num_convert[i] != 0)
               break;
             i--;          // guarda a posição em que termina os 0's a direita
           }
 
-          fputc(*(num+0), arq_out);   //imprime o sinal
+          fputc(num[0], arq_out);   //imprime o sinal
           for (; k <= i; k++){
             if (b_destino == -1)
-              fputc(transformaXint(*(num_convert+k), j, numX), arq_out);
+              fputc(transformaXint(num_convert[k], j, numX), arq_out);
             else
-              fputc(transformaInt(*(num_convert+k)), arq_out);
+              fputc(transformaInt(num_convert[k]), arq_out);
           }
           fputc('\n', arq_out);
         }
