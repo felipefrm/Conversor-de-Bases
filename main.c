@@ -6,7 +6,7 @@
 
 #define N 51
 
-int main(void){
+int main(int argc, char **argv){
 
   char num[N], num_convert[N], numX[N];                 // Variavies necessárias
   int b_origem, b_destino, num_digitos, num_char[N], i, j, k, baseX;
@@ -15,14 +15,14 @@ int main(void){
   unsigned long long int inteira;
 
   FILE *arq_out;
-  arq_out = fopen("arquivo_saida", "w");
+  arq_out = fopen(argv[2], "w");
   if (arq_out == NULL){
     fprintf(stderr, "Erro na abertura do arquivo.\n");
     exit(1);
   }
 
   FILE *arq_bX;
-  arq_bX = fopen("arquivo_baseX", "r");
+  arq_bX = fopen(argv[1], "r");
   if (arq_bX == NULL){
     fprintf(stderr, "Erro na abertura do arquivo.\n");
     exit(1);
@@ -144,4 +144,5 @@ int main(void){
     }
   }
   fclose(arq_out);
+  return 0;
 }
