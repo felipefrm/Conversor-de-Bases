@@ -1,7 +1,7 @@
 ########## Makefile ############
 
 all: main.o convercoes.o verificacoes.o
-	gcc verificacoes.o convercoes.o main.o -o tp -lm
+	gcc verificacoes.o convercoes.o main.o -o conversor -lm
 
 main.o: main.c convercoes.h verificacoes.h
 	gcc -g -c main.c
