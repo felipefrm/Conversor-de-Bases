@@ -41,7 +41,7 @@ D
 - Executando o programa:
 
 ```
-./tp arquivo_baseX saida
+./conversor arquivo_baseX saida
 ```
 
 - Exemplo de Entrada (via stdin):
